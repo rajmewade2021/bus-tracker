@@ -1,7 +1,12 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function BusList({ buses, selectedBusNumber, onSelectBus }) {
   const busEntries = Object.entries(buses);
+  const [searchQuery, setSearchQuery] = useState('');
+  const filteredBusEntries = busEntries.filter(([busNumber]) =>
+    busNumber.toLowerCase().includes(searchQuery.trim().toLowerCase())
+  );
 
   return (
     <aside
@@ -16,12 +21,26 @@ export default function BusList({ buses, selectedBusNumber, onSelectBus }) {
         </p>
       </div>
 
+      <div className="px-3 pt-3">
+        <label htmlFor="bus-number-search" className="sr-only">Search buses by bus number</label>
+        <input
+          id="bus-number-search"
+          type="search"
+          value={searchQuery}
+          onChange={(event) => setSearchQuery(event.target.value)}
+          placeholder="Search bus number"
+          className="w-full rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 outline-none transition focus:border-amber-400/50 focus:ring-1 focus:ring-amber-400/30"
+        />
+      </div>
+
       {/* List */}
       <div className="flex flex-col gap-1 p-3">
         {busEntries.length === 0 ? (
           <p className="text-white/20 text-xs text-center py-6">No buses online</p>
+        ) : filteredBusEntries.length === 0 ? (
+          <p className="text-white/20 text-xs text-center py-6">No buses match that number</p>
         ) : (
-          busEntries.map(([busNumber, bus]) => (
+          filteredBusEntries.map(([busNumber, bus]) => (
             <motion.button
               key={busNumber}
               type="button"
