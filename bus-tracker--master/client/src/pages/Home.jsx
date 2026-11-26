@@ -163,7 +163,7 @@ export default function Home() {
           transition={{ delay: 0.75, duration: 0.6 }}
         >
           
-          <span className="text-white/45 font-medium">Developed by Nikhil Chouksey</span>
+          <span className="text-white/45 font-medium"> </span>
         </motion.div>
 
       </div>
